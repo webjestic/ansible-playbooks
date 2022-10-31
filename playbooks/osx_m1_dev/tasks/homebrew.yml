@@ -1,22 +1,21 @@
 ---
-# - name: 'add custom homebrew repos'
-#   community.general.homebrew_tap:
-#     name: [
-#       homebrew/cask-versions,
-#     ]
+- name: 'add custom homebrew repos'
+  community.general.homebrew_tap:
+    name: [
+      homebrew/cask-versions,
+    ]
 
-# - name: Install core packages via brew casks
-#   community.general.homebrew_cask:
-#     name: "{{ item }}"
-#   ignore_errors: yes
-#   with_items:
-#     - figma
+- name: Install core packages via brew casks
+  community.general.homebrew_cask:
+    name: "{{ item }}"
+  ignore_errors: yes
+  with_items:
+    - figma
 
 - name: "Install homebrew packages"
   community.general.homebrew:
     name: [
-      'asdf',
-      direnv,
+      'asdf'
     ]
     #state: present
     state: absent

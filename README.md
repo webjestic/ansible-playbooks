@@ -8,9 +8,11 @@ https://docs.ansible.com/ansible/latest/collections/community/general/index.html
 
 https://developer.apple.com/download/all/?q=XCode
 
-`gem which cocoapods`
+`pod --version`
 
 `/usr/bin/xcodebuild -version`
+
+`open -a Simulator`
 
 ---
 ## Requirements
@@ -39,10 +41,10 @@ ansible-galaxy collection install community.general
 ```bash
 # Playbook commands
 ansible-playbook --version
-ansible-playbook -i inventory playbooks/osx_m1_dev/main.yml --syntax-check
-ansible-playbook -i inventory playbooks/osx_m1_dev/main.yml --ask-become-pass
-ansible-playbook -i inventory playbooks/osx_m1_dev/main.yml --ask-vault-pass
-ansible-playbook -i inventory playbooks/osx_m1_dev/main.yml --ask-sudo-pass
+ansible-playbook -i inventory playbooks/osx_intel_flutter_lts.yml --syntax-check
+ansible-playbook -i inventory playbooks/osx_intel_flutter_lts/main.yml --ask-become-pass -vv
+ansible-playbook -i inventory playbooks/osx_intel_flutter_lts/main.yml --ask-vault-pass
+ansible-playbook -i inventory playbooks/osx_intel_flutter_lts/main.yml --ask-sudo-pass
 
 # Galaxy commands
 ansible-galaxy --version
@@ -79,44 +81,41 @@ Homebrew taps installed through Ansible are done with the [Homebrew Tap Module](
 (`brew install --cask firefox`)
 Homebrew casks installed through Ansible are done with the [Homebrew Cask Module](https://docs.ansible.com/ansible/latest/collections/community/general/homebrew_cask_module.html#ansible-collections-community-general-homebrew-cask-module)
 
-- Package - A package is often a terminal application, such as wget</br>
+- Package Formulaer - A package is often a terminal application (but that is not a requirement), such as wget</br>
 (`brew install wget`)</br>
 Homebrew packages are installed through Ansible are done with the [Homebrew Module](https://docs.ansible.com/ansible/latest/collections/community/general/homebrew_module.html#ansible-collections-community-general-homebrew-module)
 
+```yml
+- name: 'add custom homebrew repos'
+  community.general.homebrew_tap:
+    name: [
+      homebrew/cask-versions,
+    ]
+    state: absent
+    update_homebrew: no
+
+- name: Install core packages via brew casks
+  community.general.homebrew_cask:
+    name: android-studio
+    #state: present
+    state: absent
+    update_homebrew: no
+
+- name: "Install homebrew packages"
+  community.general.homebrew:
+    name: [
+      'asdf'
+    ]
+    #state: present
+    state: absent
+    update_homebrew: yes
+```
+
 ---
-## What Get's Installed
+## Flutter Latest (Manual)
 
-- zsh + oh-my-zsh
-- openssl
-- gupnp (gpg)
+https://www.chrisjmendez.com/2021/05/12/how-to-install-flutter-on-mac-osx-using-homebrew/
 
-- openjdk
-
-- nvm
-- node
-- npm
-
-- xcode
-
-- fvm
-- flutter
-- cocoapods
-
-- VS Studio Code
-- Android Studio
-
-- redis
-- redis insight
-
-- mongo
-- mongo-cli
-- mongo-compass
-
-- kubectl
-- doctl
-
-- docker
-- postman
 
 ## Created Folders
 ```

@@ -1,0 +1,29 @@
+---
+- name: "Install OpenJDK"
+  community.general.homebrew:
+    name: openjdk
+    #state: present / absent
+    state: absent
+    update_homebrew: yes
+
+- name: Install Android Studio
+  community.general.homebrew_cask:
+    name: android-studio
+    #state: present
+    state: absent
+    update_homebrew: no
+
+- name: Install Android SDK
+  community.general.homebrew_cask:
+    name: android-sdk
+    #state: present
+    state: absent
+    update_homebrew: no
+
+- name: Install Android NDP
+  community.general.homebrew_cask:
+    name: android-ndk
+    #state: present
+    state: absent
+    update_homebrew: no
+
