@@ -1,0 +1,9 @@
+---
+- name: "Install cocoapods"
+  community.general.homebrew:
+    name: [
+      'cocoapods'
+    ]
+    #state: present / absent
+    state: absent
+    update_homebrew: no
