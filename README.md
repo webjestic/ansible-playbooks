@@ -131,6 +131,6 @@ https://www.chrisjmendez.com/2021/05/12/how-to-install-flutter-on-mac-osx-using-
 
 ```json
 {
-  "environment": "development"
+  "environment": "production"
 }
 ```
