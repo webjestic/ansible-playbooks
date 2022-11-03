@@ -44,6 +44,10 @@
       become: true
 
     # INSTALLATION
+    - import_tasks: tasks/openjdk.yml
+      #when: configure_terminal
+      tags: ['java']
+
     - import_tasks: tasks/android_lts.yml
       #when: configure_terminal
       tags: ['android']
