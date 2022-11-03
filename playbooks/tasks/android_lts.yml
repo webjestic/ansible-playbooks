@@ -1,10 +1,4 @@
 ---
-- name: "Install OpenJDK"
-  community.general.homebrew:
-    name: openjdk
-    #state: present / absent
-    state: absent
-    update_homebrew: yes
 
 - name: Install Android Studio
   community.general.homebrew_cask:

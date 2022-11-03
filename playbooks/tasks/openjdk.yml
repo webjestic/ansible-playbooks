@@ -1,0 +1,7 @@
+---
+- name: "Install OpenJDK"
+  community.general.homebrew:
+    name: openjdk
+    #state: present / absent
+    state: present
+    update_homebrew: yes
