@@ -1,0 +1,93 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    ansible_connection: local
+    ansible_python_interpreter: "{{ansible_playbook_python}}"
+  
+  handlers:
+  
+  tasks:
+    - name: Make sure homebrew bin is in path.
+      ansible.builtin.lineinfile:
+        path: /etc/paths
+        state: present
+        line: '/opt/homebrew/bin'
+      become: true
+      become_user: root
+
+    - name: Install ZSH shell.
+      community.general.homebrew:
+        name: zsh
+        state: present
+        update_homebrew: no
+      become: true
+
+    - name: Install Oh-My-zsh configuration framework.
+      become: true
+      command: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+    - name: Register path to zsh.
+      become: false
+      local_action: command which zsh
+      register: zsh_path
+
+    - name: Set zsh as the default shell.
+      become: true
+      command: chsh -s $(which zsh)
+
+    - name: Ensure homebrew zsh is in allowed shells.
+      lineinfile:
+        path: /etc/shells
+        line: "{{ zsh_path.stdout }}"
+      become: true
+
+    - name: Install Fira font.
+      become: true
+      command: curl --output-dir "~/Library/Fonts" -O 'https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraMono/Regular/complete/Fura%20Mono%20Regular%20Nerd%20Font%20Complete.otf'
+
+    - name: Visual Studio Code settings into fact.
+      ansible.builtin.set_fact:
+        vcsettings: "{{ lookup('file', '~/Library/Application\ Support/Code/User/settings.json) }}"
+
+    - name: Get Font Family into fact.
+      ansible.builtin.set_fact:
+        ffamily: "{{ vcsettings | json_query('editor.fontFamily') }}"
+
+    - name: Update the VSCode settings font family.
+      ansible.utils.update_fact:
+        updates:
+          - path: vcsettings.editor.fontFamily
+            value: "{{ ffamily + ',' + \"'FuraMono Nerd Font'\" }}"
+
+    - name: Update the VSCode settings font size.
+      ansible.utils.update_fact:
+        updates:
+          - path: vcsettings.editor.editor.fontSize
+            value: 13
+
+    - name: Update the terminal font.
+      become: true
+      command: osascript -e "tell application \"Terminal\" to set the font name of basic to \"Fira Mono 12\""
+
+    - name: Instal PowerLevel10k ZSH Theme.
+      become: true
+      command: git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+
+    - name: Copy the PowerLevel10k default config.
+      ansible.builtin.copy:
+        src: files/.p10k.zsh
+        dest: ~/.p10k.zsh
+        become: true
+        mode: '0644'
+
+    # add ZSH_THEME="powerlevel10k/powerlevel10k" to ~/.zshrc
+    # add export ZSH="$HOME/.oh-my-zsh" to ~/.zshrc
+    # add plugins=(git) to ~/.zshrc
+    # add source $ZSH/oh-my-zsh.sh to ~/.zshrc
+    # add if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    #       source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    #     fi
+
