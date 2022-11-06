@@ -42,9 +42,9 @@ ansible-galaxy collection install community.general
 # Playbook commands
 ansible-playbook --version
 ansible-playbook playbooks/osx_intel_flutter_lts.yml --syntax-check
-ansible-playbook playbooks/osx_intel_flutter_lts/main.yml --ask-become-pass -vv
-ansible-playbook playbooks/osx_intel_flutter_lts/main.yml --ask-vault-pass
-ansible-playbook playbooks/osx_intel_flutter_lts/main.yml --ask-sudo-pass
+ansible-playbook playbooks/osx_intel_flutter_lts.yml --ask-become-pass -vv
+ansible-playbook playbooks/osx_intel_flutter_lts.yml --ask-vault-pass
+ansible-playbook playbooks/osx_intel_flutter_lts.yml --ask-sudo-pass
 
 # Galaxy commands
 ansible-galaxy --version

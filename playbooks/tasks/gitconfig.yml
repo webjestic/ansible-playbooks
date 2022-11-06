@@ -1,0 +1,30 @@
+---
+- name: "Update .gitconfig core.pager"
+  git_config:
+    name: core.pager
+    scope: global
+    value: cat
+
+- name: "Update .gitconfig core.editor"
+  git_config:
+    name: core.editor
+    scope: global
+    value: code --wait
+
+- name: "Update .gitconfig core.autocrlf"
+  git_config:
+    name: core.autocrlf
+    scope: global
+    value: input
+
+- name: "Update .gitconfig diff.tool"
+  git_config:
+    name: diff.tool
+    scope: global
+    value: vscode
+
+- name: "Update .gitconfig [difftool "vscode"]"
+  git_config:
+    name: difftool "vscode".cmd
+    scope: global
+    value: "code --wait --diff $LOCAL $REMOTE"

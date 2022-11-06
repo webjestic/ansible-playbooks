@@ -43,17 +43,21 @@
         line: "{{ zsh_path.stdout }}"
       become: true
 
+    - name: "Update giconfig"
+      git_config:
+        name: core.pager
+        scope: global
+        value: cat
+
     # INSTALLATION
-    - import_tasks: tasks/openjdk.yml
-      #when: configure_terminal
-      tags: ['java']
+    # - import_tasks: tasks/openjdk.yml
+    #   tags: ['java']
 
-    - import_tasks: tasks/android_lts.yml
-      #when: configure_terminal
-      tags: ['android']
+    # - import_tasks: tasks/android_lts.yml
+    #   tags: ['android']
 
-    - import_tasks: tasks/flutter_lts.yml
-      tags: ['flutter']
+    # - import_tasks: tasks/flutter_lts.yml
+    #   tags: ['flutter']
 
-    - import_tasks: tasks/cocoapods.yml
-      tags: ['cocoapods']
+    # - import_tasks: tasks/cocoapods.yml
+    #   tags: ['cocoapods']
